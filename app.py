@@ -15,6 +15,7 @@ from styleframe import StyleFrame
 
 from UliPlot.XLSX import auto_adjust_xlsx_column_width
 
+import utils
 from utils.params import Utils
 from utils.formats_excel import Formats
 from utils.transform import Transform #  get worksheet
