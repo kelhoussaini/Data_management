@@ -1,13 +1,9 @@
 streamlit 
 requests
 
-xlsxwriter
-
 numpy 
 pandas 
 PyPDF2
-PyPDF2
-
 base64
 io
 datetime
@@ -22,3 +18,4 @@ xlsxwriter
 openpyxl
 
 xlrd
+base58==2.0.1
