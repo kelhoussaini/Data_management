@@ -19,8 +19,6 @@ import utils
 from utils.params import Utils
 from utils.formats_excel import Formats
 from utils.transform import Transform #  get worksheet
-from utils.export_files import Export
-
 
 
 # this slider allows the user to select a number of lines
