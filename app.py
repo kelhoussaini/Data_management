@@ -20,6 +20,7 @@ from utils.params import Utils
 from utils.formats_excel import Formats
 from utils.transform import Transform #  get worksheet
 
+import os
 
 # this slider allows the user to select a number of lines
 # to display in the dataframe
@@ -31,7 +32,8 @@ from utils.transform import Transform #  get worksheet
 '''
 
 
-xlsFilepath = 'Facilis___IA_BTP.xlsx'
+xlsFilepath = os.path.join(os.getcwd(),'Facilis___IA_BTP.xlsx')
+
 # Add a selectbox to the sidebar:
 
 NAME_SHEET = st.sidebar.selectbox(
