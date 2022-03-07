@@ -15,7 +15,6 @@ pandas
 PyPDF2
 base58==2.0.1
 
-io
 datetime
 styleframe
 
