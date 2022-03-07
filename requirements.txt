@@ -1,3 +1,5 @@
+-i https://pypi.org/simple
+
 streamlit 
 requests
 
