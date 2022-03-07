@@ -32,7 +32,8 @@ import os
 '''
 
 
-xlsFilepath = os.path.join(os.getcwd(),'Facilis___IA_BTP.xlsx')
+path_dir = '/Users/kenzaelhoussaini/code/kelhoussaini/Data_management/'
+xlsFilepath = os.path.join(path_dir,'Facilis___IA_BTP.xlsx')
 
 # Add a selectbox to the sidebar:
 
