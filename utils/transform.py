@@ -14,7 +14,7 @@ import datetime
 from styleframe import StyleFrame
 
 from UliPlot.XLSX import auto_adjust_xlsx_column_width
-
+import os
 class Transform():
     
     def __init__(self, 
@@ -44,7 +44,7 @@ class Transform():
     
     def get_writer(self): # dataframe
         
-        writer_save = pd.ExcelWriter(self.xlsFilepath, engine='xlsxwriter')
+        writer_save = pd.ExcelWriter(os.getcwd()+”/Intermediate_Data/”+self.xlsFilepath, engine='xlsxwriter')
         # Convert the dataframe to an XlsxWriter Excel object.
         self.dataframe.to_excel(writer_save, sheet_name='Summary__IA_BTP',
                                 encoding='utf-8',index=False)
