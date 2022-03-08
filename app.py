@@ -31,9 +31,7 @@ import os
 # IA -- BTP 
 '''
 
-
 xlsFilepath = 'Facilis___IA_BTP.xlsx'
-
 # Add a selectbox to the sidebar:
 
 NAME_SHEET = st.sidebar.selectbox(
@@ -146,7 +144,7 @@ if checkbox_val:
 
             checkbox_dataframe = st.checkbox("Display data")
             
-            def highlight_max(self, s):
+            def highlight_max(s):
                 is_max = s == s.max()
                 return ['background: lightgreen' if cell else '' for cell in is_max]
 
@@ -159,10 +157,7 @@ if checkbox_val:
                 
             checkbox_export_file = st.checkbox("Export data to Excel file")
             if checkbox_export_file:
-                #Export(dataframe = concat, xlsFilepath=xlsFilepath).export_file_option4() #dataframe = concat)
-                
-                #Utils(dataframe = concat, xlsFilepath=xlsFilepath).steps(apply = True, link=True)
-                #Utils(dataframe = concat, xlsFilepath=xlsFilepath).steps(apply = True, link=False)
+               
                 Utils(dataframe = concat, xlsFilepath=xlsFilepath).steps_grouped(apply = True, link=True)
                                             
         elif pdf_file is None:
