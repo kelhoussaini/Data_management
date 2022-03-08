@@ -27,10 +27,10 @@ import openpyxl
 
 class Formats():
 
-    #def __init__(self, dataframe, xlsFilepath):
+    def __init__(self, dataframe, xlsFilepath):
         
-     #   self.transf = Transform(dataframe, xlsFilepath)
-     #   print(self.transf)
+        self.transf = Transform(dataframe, xlsFilepath)
+        print(self.transf)
         
         
         
@@ -106,6 +106,9 @@ class Formats():
     def appply_formats_xlsxwriter(self, worksheet, workbook = xlsxwriter.workbook.Workbook()): # Add some cell formats.
             
             dict_formats = self.formats_xlsxwriter(workbook = workbook)
+            
+            df = self.transf.dataframe
+            
             for col in list(range(1,2)) + list(range(4,6)) + [7]:
                 worksheet.set_column(col, col, 50)
 
@@ -129,7 +132,7 @@ class Formats():
 
             first_col = 0
             last_col = 0
-            last_row = dataframe.shape[0]
+            last_row = df.shape[0]
 
             worksheet.set_column(first_col, first_col, 25)
 
@@ -166,7 +169,7 @@ class Formats():
                                             'maximum':  7000,
                                             'format':   dict_formats["money_fmt_bet"]})
             
-            return worksheet
+            return (workbook, worksheet)
 
 
             
@@ -284,15 +287,6 @@ class Formats():
             worksheet[sheetname].column_dimensions[col].width = 15
                    
         
-        return 1 # worksheet['Summary__IA_BTP']#worksheet
+        return worksheet # worksheet['Summary__IA_BTP']#worksheet
 
-            
-
-
-
-
-        
-
-        
-        
         
