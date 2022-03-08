@@ -14,7 +14,9 @@ import datetime
 from styleframe import StyleFrame
 
 from UliPlot.XLSX import auto_adjust_xlsx_column_width
+
 import os
+
 class Transform():
     
     def __init__(self, 
@@ -57,18 +59,8 @@ class Transform():
             self.dataframe.to_excel(writer_load, sheet_name='Summary__IA_BTP',
                                 index=False)
                    
-        #towrite.seek(0)  # reset pointer
-        #b64 = base64.b64encode(towrite.read()).decode()  # some strings
-
-       # linko= f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="{self.xlsFilepath}">Download excel file</a>'
-        #st.markdown(linko, unsafe_allow_html=True)
-           
-        #workbook  = writer.book
-        #worksheet = writer.sheets['Summary__IA_BTP']
-                  
-        #writer_load.save() # Close the Pandas Excel writer and output the Excel file.
-        
-        #towrite.seek(0)
         return (writer_save, towrite)
-          
+    
+    
+        
     
