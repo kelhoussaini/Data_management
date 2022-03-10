@@ -36,26 +36,6 @@ import plotly.express as px
 # IA -- BTP 
 '''
 
-
-dict_ = {'X_axis': np.random.randint(10, 50, 20),
-            'Y_axis': [i for i in range(20)]}
-
-df = pd.DataFrame(dict_)
-
-#Axis to color
-color="X_axis"
-
-fig = px.bar(        
-        df,
-        x = "X_axis",
-        y = "Y_axis",
-        title = "Bar Graph",
-        color="X_axis",
-)
-st.plotly_chart(fig)
-
-
-
 xlsFilepath = 'Facilis___IA_BTP.xlsx'
 # Add a selectbox to the sidebar:
 
