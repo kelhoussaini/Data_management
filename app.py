@@ -22,6 +22,11 @@ from utils.transform import Transform #  get worksheet
 
 import os
 
+# Data visualization
+import plotly.graph_objects as go
+import plotly.express as px
+
+
 # this slider allows the user to select a number of lines
 # to display in the dataframe
 
@@ -30,6 +35,26 @@ import os
 '''
 # IA -- BTP 
 '''
+
+
+dict_ = {'X_axis': np.random.randint(10, 50, 20),
+            'Y_axis': [i for i in range(20)]}
+
+df = pd.DataFrame(dict_)
+
+#Axis to color
+color="X_axis"
+
+fig = px.bar(        
+        df,
+        x = "X_axis",
+        y = "Y_axis",
+        title = "Bar Graph",
+        color="X_axis",
+)
+st.plotly_chart(fig)
+
+
 
 xlsFilepath = 'Facilis___IA_BTP.xlsx'
 # Add a selectbox to the sidebar:
@@ -159,6 +184,102 @@ if checkbox_val:
             if checkbox_export_file:
                
                 Utils(dataframe = concat, xlsFilepath=xlsFilepath).steps_grouped(apply = True, link=True)
+                
+                
+        
+            checkbox_stat = st.checkbox("Statistiques")
+            if checkbox_stat:
+                Stat = st.selectbox('Stat',  
+                                         ('Please select', 
+                                          'Sum amounts by week number', 'Count bills number by provider')) 
+                # add id as the primary key.
+                concat['id'] = list(np.arange(1, len(concat)+1))
+                #st.dataframe(concat)
+
+                #Multiple rows are with the same provider
+                # We make a new column to represent providers by their id.
+                #Using for loop,dictionary and map functions 
+
+                def map_index(liste=[], start_id=1, end_id=11): #end_id=len(liste)+1
+                    list2 = list(np.arange(start_id, end_id))
+
+                    dic = {}
+                    for i,j in enumerate(liste):
+                        dic[j] = i+1
+                    return dic
+
+                L = list(concat['Fournisseurs IA-BTP'].unique())
+
+                res = map_index(liste = L, start_id = 1, end_id=len(L)+1)
+                concat["id_fournisseurs"] = concat["Fournisseurs IA-BTP"].map(res)
+             
+                if Stat == 'Sum amounts by week number':
+                    
+                    # Sum amounts, maximal amount, and minimal amount by week number
+                    res = concat[(concat[ "n° sem"]>9) & (concat[ "n° sem"]<25)] .groupby( "n° sem" ).agg( 
+                    Montant_total = ('Montant','sum'),
+                    min_montant = ('Montant', 'min'), 
+                    max_montant = ('Montant', 'max'),
+                    nbre_factures = ('id', 'count')
+                    ).reset_index().rename(columns = {'n° sem':'Semaine',
+                                                     'nbre_factures' : 'Nbre factures'}, inplace = False) #id refers to bills
+
+                    list_cols = ['Semaine', 'Montant_total', 'Nbre factures']
+                    st.dataframe(res[list_cols])
+                    
+                    checkbox_viz = st.checkbox("Visualization")
+                    if checkbox_viz:
+                        #Axis to color
+                        color="Montant_total"
+
+                        fig = px.bar(        
+                                res[list_cols],
+                                x = "Semaine",
+                                y = "Montant_total",
+                                title = "Bar Graph",
+                                color="Montant_total",
+                        )
+                        st.header("Sum amounts by week number")
+                        st.plotly_chart(fig)
+                        
+                    
+                if Stat == 'Count bills number by provider':
+                    counts = concat[(concat[ "n° sem"]>7) & (concat[ "n° sem"]<25)].groupby(
+                        ["id_fournisseurs", "Fournisseurs IA-BTP"] ).agg( 
+                    nbre_factures = ('id', 'count')).reset_index().rename(
+                        columns = {'nbre_factures' : 'Nbre factures'},
+                                           inplace = False).sort_values(by='Nbre factures', ascending=False) #id refers to bills
+                    
+                    list_cols = ['Fournisseurs IA-BTP','Nbre factures']
+                    st.dataframe(counts[list_cols])
+                    
+                    checkbox_viz = st.checkbox("Visualization")
+                    if checkbox_viz:
+                        
+                        #The plot
+                        figo = go.Figure(
+                            go.Pie(
+                            labels = counts["Fournisseurs IA-BTP"],
+                            values = counts["Nbre factures"],
+                            hoverinfo = "label+percent",
+                            textinfo = "value"
+                        ))
+
+                        st.header("Pie chart, Count bills number by provider")
+                        st.plotly_chart(figo)
+                        
+                        #Axis to color
+                        color="Nbre factures"
+
+                        fig = px.bar(        
+                                counts[list_cols],
+                                x = "Fournisseurs IA-BTP",
+                                y = "Nbre factures",
+                                title = "Bar Graph",
+                                color="Nbre factures",
+                        )
+                        st.header("Count bills number by provider")
+                        st.plotly_chart(fig)
                                             
         elif pdf_file is None:
             st.markdown("####  ###")
@@ -166,6 +287,9 @@ if checkbox_val:
         else:
             st.markdown("#### Please check the type of your uploaded file ###")
             
+            
+            
+    
                 
      
 
