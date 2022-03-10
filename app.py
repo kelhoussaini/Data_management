@@ -167,99 +167,99 @@ if checkbox_val:
                 
                 
         
-            checkbox_stat = st.checkbox("Statistiques")
-            if checkbox_stat:
-                Stat = st.selectbox('Stat',  
-                                         ('Please select', 
-                                          'Sum amounts by week number', 'Count bills number by provider')) 
-                # add id as the primary key.
-                concat['id'] = list(np.arange(1, len(concat)+1))
-                #st.dataframe(concat)
+                checkbox_stat = st.checkbox("Statistiques")
+                if checkbox_stat:
+                    Stat = st.selectbox('Stat',  
+                                             ('Please select', 
+                                              'Sum amounts by week number', 'Count bills number by provider')) 
+                    # add id as the primary key.
+                    concat['id'] = list(np.arange(1, len(concat)+1))
+                    #st.dataframe(concat)
 
-                #Multiple rows are with the same provider
-                # We make a new column to represent providers by their id.
-                #Using for loop,dictionary and map functions 
+                    #Multiple rows are with the same provider
+                    # We make a new column to represent providers by their id.
+                    #Using for loop,dictionary and map functions 
 
-                def map_index(liste=[], start_id=1, end_id=11): #end_id=len(liste)+1
-                    list2 = list(np.arange(start_id, end_id))
+                    def map_index(liste=[], start_id=1, end_id=11): #end_id=len(liste)+1
+                        list2 = list(np.arange(start_id, end_id))
 
-                    dic = {}
-                    for i,j in enumerate(liste):
-                        dic[j] = i+1
-                    return dic
+                        dic = {}
+                        for i,j in enumerate(liste):
+                            dic[j] = i+1
+                        return dic
 
-                L = list(concat['Fournisseurs IA-BTP'].unique())
+                    L = list(concat['Fournisseurs IA-BTP'].unique())
 
-                res = map_index(liste = L, start_id = 1, end_id=len(L)+1)
-                concat["id_fournisseurs"] = concat["Fournisseurs IA-BTP"].map(res)
-             
-                if Stat == 'Sum amounts by week number':
-                    
-                    # Sum amounts, maximal amount, and minimal amount by week number
-                    res = concat[(concat[ "n° sem"]>9) & (concat[ "n° sem"]<25)] .groupby( "n° sem" ).agg( 
-                    Montant_total = ('Montant','sum'),
-                    min_montant = ('Montant', 'min'), 
-                    max_montant = ('Montant', 'max'),
-                    nbre_factures = ('id', 'count')
-                    ).reset_index().rename(columns = {'n° sem':'Semaine',
-                                                     'nbre_factures' : 'Nbre factures'}, inplace = False) #id refers to bills
+                    res = map_index(liste = L, start_id = 1, end_id=len(L)+1)
+                    concat["id_fournisseurs"] = concat["Fournisseurs IA-BTP"].map(res)
 
-                    list_cols = ['Semaine', 'Montant_total', 'Nbre factures']
-                    st.dataframe(res[list_cols])
-                    
-                    checkbox_viz = st.checkbox("Visualization")
-                    if checkbox_viz:
-                        #Axis to color
-                        color="Montant_total"
+                    if Stat == 'Sum amounts by week number':
 
-                        fig = px.bar(        
-                                res[list_cols],
-                                x = "Semaine",
-                                y = "Montant_total",
-                                title = "Bar Graph",
-                                color="Montant_total",
-                        )
-                        st.header("Sum amounts by week number")
-                        st.plotly_chart(fig)
-                        
-                    
-                if Stat == 'Count bills number by provider':
-                    counts = concat[(concat[ "n° sem"]>7) & (concat[ "n° sem"]<25)].groupby(
-                        ["id_fournisseurs", "Fournisseurs IA-BTP"] ).agg( 
-                    nbre_factures = ('id', 'count')).reset_index().rename(
-                        columns = {'nbre_factures' : 'Nbre factures'},
-                                           inplace = False).sort_values(by='Nbre factures', ascending=False) #id refers to bills
-                    
-                    list_cols = ['Fournisseurs IA-BTP','Nbre factures']
-                    st.dataframe(counts[list_cols])
-                    
-                    checkbox_viz = st.checkbox("Visualization")
-                    if checkbox_viz:
-                        
-                        #The plot
-                        figo = go.Figure(
-                            go.Pie(
-                            labels = counts["Fournisseurs IA-BTP"],
-                            values = counts["Nbre factures"],
-                            hoverinfo = "label+percent",
-                            textinfo = "value"
-                        ))
+                        # Sum amounts, maximal amount, and minimal amount by week number
+                        res = concat[(concat[ "n° sem"]>9) & (concat[ "n° sem"]<25)] .groupby( "n° sem" ).agg( 
+                        Montant_total = ('Montant','sum'),
+                        min_montant = ('Montant', 'min'), 
+                        max_montant = ('Montant', 'max'),
+                        nbre_factures = ('id', 'count')
+                        ).reset_index().rename(columns = {'n° sem':'Semaine',
+                                                         'nbre_factures' : 'Nbre factures'}, inplace = False) #id refers to bills
 
-                        st.header("Pie chart, Count bills number by provider")
-                        st.plotly_chart(figo)
-                        
-                        #Axis to color
-                        color="Nbre factures"
+                        list_cols = ['Semaine', 'Montant_total', 'Nbre factures']
+                        st.dataframe(res[list_cols])
 
-                        fig = px.bar(        
-                                counts[list_cols],
-                                x = "Fournisseurs IA-BTP",
-                                y = "Nbre factures",
-                                title = "Bar Graph",
-                                color="Nbre factures",
-                        )
-                        st.header("Count bills number by provider")
-                        st.plotly_chart(fig)
+                        checkbox_viz = st.checkbox("Visualization")
+                        if checkbox_viz:
+                            #Axis to color
+                            color="Montant_total"
+
+                            fig = px.bar(        
+                                    res[list_cols],
+                                    x = "Semaine",
+                                    y = "Montant_total",
+                                    title = "Bar Graph",
+                                    color="Montant_total",
+                            )
+                            st.header("Sum amounts by week number")
+                            st.plotly_chart(fig)
+
+
+                    if Stat == 'Count bills number by provider':
+                        counts = concat[(concat[ "n° sem"]>7) & (concat[ "n° sem"]<25)].groupby(
+                            ["id_fournisseurs", "Fournisseurs IA-BTP"] ).agg( 
+                        nbre_factures = ('id', 'count')).reset_index().rename(
+                            columns = {'nbre_factures' : 'Nbre factures'},
+                                               inplace = False).sort_values(by='Nbre factures', ascending=False) #id refers to bills
+
+                        list_cols = ['Fournisseurs IA-BTP','Nbre factures']
+                        st.dataframe(counts[list_cols])
+
+                        checkbox_viz = st.checkbox("Visualization")
+                        if checkbox_viz:
+
+                            #The plot
+                            figo = go.Figure(
+                                go.Pie(
+                                labels = counts["Fournisseurs IA-BTP"],
+                                values = counts["Nbre factures"],
+                                hoverinfo = "label+percent",
+                                textinfo = "value"
+                            ))
+
+                            st.header("Pie chart, Count bills number by provider")
+                            st.plotly_chart(figo)
+
+                            #Axis to color
+                            color="Nbre factures"
+
+                            fig = px.bar(        
+                                    counts[list_cols],
+                                    x = "Fournisseurs IA-BTP",
+                                    y = "Nbre factures",
+                                    title = "Bar Graph",
+                                    color="Nbre factures",
+                            )
+                            st.header("Count bills number by provider")
+                            st.plotly_chart(fig)
                                             
         elif pdf_file is None:
             st.markdown("####  ###")
