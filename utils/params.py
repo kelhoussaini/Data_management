@@ -24,6 +24,8 @@ import openpyxl
 import xlrd
 import os
 
+from tempfile import NamedTemporaryFile
+
 class Utils():
     
     
@@ -82,6 +84,9 @@ class Utils():
         #with open(os.path.join("tempDir", self.transf.xlsFilepath), "wb") as f:
                  # f.write(data)
                #   st.success("Saved File:{} to tempDir".format(self.transf.xlsFilepath))
+                
+        with NamedTemporaryFile(delete=False) as tmp:
+            workbook_save.save(tmp.name)
                   
         
         workbook_save.close()
