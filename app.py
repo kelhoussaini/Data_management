@@ -168,9 +168,9 @@ if checkbox_val:
                 
                 
         
-                checkbox_stat = st.checkbox("Statistiques")
+                checkbox_stat = st.checkbox("Statistics")
                 if checkbox_stat:
-                    Stat = st.selectbox('Stat',  
+                    Stat = st.selectbox('',  
                                              ('Please select', 
                                               'Sum amounts by week number', 'Count bills number by provider')) 
                     # add id as the primary key.
@@ -211,7 +211,7 @@ if checkbox_val:
                         checkbox_viz = st.checkbox("Visualization")
                         if checkbox_viz:
                             
-                            #The plot
+                            #The plot : pie
                             figo = go.Figure(
                                 go.Pie(
                                  labels= res["Semaine"].map(lambda x: 'Week {}'.format(x)),
@@ -221,11 +221,8 @@ if checkbox_val:
                                     hole = 0.4
                             ))
 
-                            st.header("Donut chart, Sum amounts by week number")
-                            st.plotly_chart(figo)
-                            
-                            
-                            #Axis to color
+                                                       
+                            # bar chart
                             color="Montant_total"
 
                             fig = px.bar(        
@@ -235,9 +232,19 @@ if checkbox_val:
                                     title = "Bar Graph",
                                     color="Montant_total",
                             )
-                            st.header("Sum amounts by week number")
-                            st.plotly_chart(fig)
+                            
+                            option = st.radio(
+                                 'Which plot would you like to see ?',
+                                 ('Donut chart', 'Bar Graph'))
 
+                            if option == 'Donut chart':
+                                st.header("Donut chart, Sum amounts by week number")
+                                st.plotly_chart(figo)
+                                
+                            if option == 'Bar Graph':
+                                st.header("Sum amounts by week number")
+                                st.plotly_chart(fig)
+                                
 
                     if Stat == 'Count bills number by provider':
                         counts = concat[(concat[ "n° sem"]>7) & (concat[ "n° sem"]<25)].groupby(
@@ -261,9 +268,6 @@ if checkbox_val:
                                 textinfo = "value"
                             ))
 
-                            st.header("Pie chart, Count bills number by provider")
-                            st.plotly_chart(figo)
-
                             #Axis to color
                             color="Nbre factures"
 
@@ -274,8 +278,20 @@ if checkbox_val:
                                     title = "Bar Graph",
                                     color="Nbre factures",
                             )
-                            st.header("Count bills number by provider")
-                            st.plotly_chart(fig)
+                            
+                            option0 = st.radio(
+                                 'Which plot would you like to see ?',
+                                 ('Pie', 'Bar Graph'))
+
+                            if option0 == 'Pie':
+                                st.header("Pie, Count bills number by provider")
+                                st.plotly_chart(figo)
+                                
+                            if option0 == 'Bar Graph':
+                                st.header("Count bills number by provider")
+                                st.plotly_chart(fig)
+                                
+                          
                                             
         elif pdf_file is None:
             st.markdown("####  ###")
