@@ -22,6 +22,7 @@ import xlsxwriter
 import openpyxl
 
 import xlrd
+import os
 
 class Utils():
     
@@ -77,6 +78,11 @@ class Utils():
         
         linko= f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="{self.transf.xlsFilepath}">Download excel file</a>'
         st.markdown(linko, unsafe_allow_html=True)       
+        
+        #with open(os.path.join("tempDir", self.transf.xlsFilepath), "wb") as f:
+                 # f.write(data)
+               #   st.success("Saved File:{} to tempDir".format(self.transf.xlsFilepath))
+                  
         
         workbook_save.close()
         
