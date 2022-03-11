@@ -117,7 +117,8 @@ if checkbox_val:
                 print("Oops!  That was no valid number.  Try again...")
                 break
             i = i+1            
-        st.dataframe(concat)       
+        st.dataframe(concat)    
+        #concat_n = concat.copy()
         
     elif next_step == "Upload file":
         pdf_file = st.file_uploader("Please Choose a file",  type = "pdf", accept_multiple_files=False) 
@@ -209,6 +210,21 @@ if checkbox_val:
 
                         checkbox_viz = st.checkbox("Visualization")
                         if checkbox_viz:
+                            
+                            #The plot
+                            figo = go.Figure(
+                                go.Pie(
+                                 labels= res["Semaine"].map(lambda x: 'Week {}'.format(x)),
+                                 values = res["Montant_total"],
+                                hoverinfo = "label+percent",
+                                textinfo = "value",
+                                    hole = 0.4
+                            ))
+
+                            st.header("Donut chart, Sum amounts by week number")
+                            st.plotly_chart(figo)
+                            
+                            
                             #Axis to color
                             color="Montant_total"
 
