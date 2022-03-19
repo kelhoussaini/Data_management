@@ -1,0 +1,33 @@
+-i https://pypi.org/simple
+
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+
+streamlit 
+requests
+
+numpy 
+pandas 
+PyPDF2
+base58==2.0.1
+
+datetime
+styleframe
+
+UliPlot
+
+openpyxl 
+xlsxwriter
+openpyxl
+
+xlrd
+base58==2.0.1
+
+ipython-genutils==0.2.0
+ipython==7.18.1 
+
+plotly
