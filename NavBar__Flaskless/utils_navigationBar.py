@@ -6,7 +6,7 @@ from PATHS_navigationBar import NAVBAR_PATHS, SETTINGS, ANALYSIS_DROPDOWN
 
 
 def inject_custom_css():
-    with open('assets_navigationBar/styles.css') as f:
+    with open('NavBar__Flaskless/assets_navigationBar/styles.css') as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 
@@ -19,7 +19,7 @@ def get_current_route():
 
 
 def navbar_component():
-    with open("assets_navigationBar/images/settings.png", "rb") as image_file:
+    with open("NavBar__Flaskless/assets_navigationBar/images/settings.png", "rb") as image_file:
         image_as_base64 = base64.b64encode(image_file.read())
 
     navbar_items = ''
