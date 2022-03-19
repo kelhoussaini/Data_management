@@ -1,0 +1,1 @@
+web: sh setup.sh && streamlit run  navigation____without_flask.py
